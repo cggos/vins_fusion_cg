@@ -27,6 +27,15 @@ include_directories(${catkin_INCLUDE_DIRS} ${CERES_INCLUDE_DIRS}  ${EIGEN3_INCLU
 
 catkin_package()
 
+set(VocabBin ${CMAKE_CURRENT_SOURCE_DIR}/../support_files/brief_k10L6.bin)
+if(NOT EXISTS ${VocabBin})
+    message("=== Downloading brief_k10L6.bin to support_files directory ...")
+    file(DOWNLOAD
+            https://raw.githubusercontent.com/HKUST-Aerial-Robotics/VINS-Fusion/master/support_files/brief_k10L6.bin
+            ${VocabBin}
+            SHOW_PROGRESS)
+endif()
+
 add_executable(loop_fusion_node
     src/pose_graph_node.cpp
     src/pose_graph.cpp
