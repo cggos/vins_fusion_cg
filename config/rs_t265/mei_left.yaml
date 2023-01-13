@@ -1,0 +1,18 @@
+%YAML:1.0
+---
+model_type: MEI
+camera_name: t265
+image_width: 848
+image_height: 800
+mirror_parameters:
+   xi: 1.9046829074310034
+distortion_parameters:
+   k1: 0.18687417637223752
+   k2: -1.130421637467151
+   p1: -7.38476106514311e-05
+   p2: 0.0005695787723648452
+projection_parameters:
+   gamma1: 830.0567541288623
+   gamma2: 828.6042739331378
+   u0: 426.41405242269826
+   v0: 385.8680729738739
