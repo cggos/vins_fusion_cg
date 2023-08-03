@@ -12,6 +12,8 @@
 #include <iostream>
 #include <stdio.h>
 #include <opencv2/opencv.hpp>
+#include "opencv2/imgcodecs/legacy/constants_c.h"
+#include <opencv2/imgproc/imgproc_c.h>
 #include <cmath>
 #include <string>
 #include <ros/ros.h>
