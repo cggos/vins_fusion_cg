@@ -1,0 +1,71 @@
+%YAML:1.0
+
+#common parameters
+#support: 1 imu 1 cam; 1 imu 2 cam: 2 cam; 
+imu: 1         
+num_of_cam: 2  
+
+imu_topic: "/xv_sdk/xv_dev/imu_sensor/data_raw"
+image0_topic: "/xv_sdk/xv_dev/fisheye_cameras/left/image"
+image1_topic: "/xv_sdk/xv_dev/fisheye_cameras/right/image"
+output_path: "/tmp"
+
+cam0_calib: "xv_ds80_equ_left.yaml"
+cam1_calib: "xv_ds80_equ_right.yaml"
+image_width: 640
+image_height: 400
+   
+
+# Extrinsic parameter between IMU and Camera.
+estimate_extrinsic: 1   # 0  Have an accurate extrinsic parameters. We will trust the following imu^R_cam, imu^T_cam, don't change it.
+                        # 1  Have an initial guess about extrinsic parameters. We will optimize around your initial guess.
+
+body_T_cam0: !!opencv-matrix
+   rows: 4
+   cols: 4
+   dt: d
+   data: [0.99999834,  0.00066256,  0.00169642, -0.00585394,
+          -0.0006577,   0.99999567, -0.0028667,  -0.00317167,
+          -0.00169832,  0.00286558,  0.99999445,  0.01080216,
+          0.0, 0.0, 0.0, 1.0 ]
+
+body_T_cam1: !!opencv-matrix
+   rows: 4
+   cols: 4
+   dt: d
+   data: [0.99992873,  0.01179747, -0.00183287,  0.07423786,
+         -0.01181922,  0.99985393, -0.01234619, -0.00297444,
+          0.00168694,  0.01236697,  0.9999221,   0.01109306,
+           0.0, 0.0, 0.0, 1.0 ]
+
+#Multiple thread support
+multiple_thread: 1
+
+#feature traker paprameters
+max_cnt: 150            # max feature number in feature tracking
+min_dist: 30            # min distance between two features 
+freq: 20                # frequence (Hz) of publish tracking result. At least 10Hz for good estimation. If set 0, the frequence will be same as raw image 
+F_threshold: 1.0        # ransac threshold (pixel)
+show_track: 1           # publish tracking image as topic
+flow_back: 1            # perform forward and backward optical flow to improve feature tracking accuracy
+
+#optimization parameters
+max_solver_time: 0.04  # max solver itration time (ms), to guarantee real time
+max_num_iterations: 8   # max solver itrations, to guarantee real time
+keyframe_parallax: 10.0 # keyframe selection threshold (pixel)
+
+#imu parameters       The more accurate parameters you provide, the better performance
+acc_n: 0.02165722852325273         # accelerometer measurement noise standard deviation. #0.2   0.04
+gyr_n: 0.0021923690143745844         # gyroscope measurement noise standard deviation.     #0.05  0.004
+acc_w: 0.000381538711491782         # accelerometer bias random work noise standard deviation.  #0.02
+gyr_w: 1.4221215955051228e-05       # gyroscope bias random work noise standard deviation.     #4.0e-5
+g_norm: 9.8         # gravity magnitude
+
+#unsynchronization parameters
+estimate_td: 1                      # online estimate time offset between camera and imu
+td: 0.001                             # initial value of time offset. unit: s. readed image clock + td = real image clock (IMU clock)
+
+#loop closure parameters
+load_previous_pose_graph: 0        # load and reuse previous pose graph; load from 'pose_graph_save_path'
+pose_graph_save_path: "/tmp/pose_graph/" # save and load path
+save_image: 1                   # save image in pose graph for visualization prupose; you can close this function by setting 0 
